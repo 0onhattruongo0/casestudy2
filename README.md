@@ -6,3 +6,4 @@ HTML, CSS, PHP. Các chức năng chính của dự án:
 Database dữ liệu được lưu lại trên mysql workbench:
 Trang Admin để chủ shop có thể thêm, sửa, xóa sản phẩm và quản lý order của khách hàng đặt online.
 Khách hàng có thể đặt hàng lưu trong database để chủ shop biết.
+<img src="casestudy.png">
