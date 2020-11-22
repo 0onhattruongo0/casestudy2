@@ -12,5 +12,5 @@ $result = mysqli_query($con, "update product set Name='$name', img='$img', price
 mysqli_close($con);
 
 if ($result) {
-    header("location:./index.php");
+    header("location:login.php");
 }

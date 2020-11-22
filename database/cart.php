@@ -8,9 +8,11 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../asset/css/main.css" />
-    <link rel="stylesheet" href="../asset/css/resetcss.css" />
-    <link rel="stylesheet" href="../asset/fonts/fontawesome-free-5.15.1-web/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="../asset/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
 
@@ -61,16 +63,20 @@ session_start();
                     } elseif (empty($_POST['quantity'])) {
                         $error = "Giỏ hàng rỗng.";
                     }
-                    if ($error == false && (!empty($_POST['quantity']))) {
+                    if ($error == false) {
                         $products = mysqli_query($con, "select * from product where id_product in (" . implode(",", array_keys($_POST['quantity'])) . ")");
                         $total = 0;
                         $order_product = array();
                         while ($row = mysqli_fetch_array($products)) {
+
                             $order_product[] = $row;
                             $total += $row['price'] * $_POST['quantity'][$row['id_product']];
                         }
+
                         $insert_order = mysqli_query($con, "INSERT INTO `casestudy`.`orders` (`Name`, `phone`, `address`, `note`, `total`, `created_time`, `last_update`) VALUES ('" . $_POST['Name'] . "', '" . $_POST['phone'] . "', '" . $_POST['address'] . "', '" . $_POST['note'] . "', '" . $total . "', '" . time() . "', '" . time() . "');");
+
                         $orderID = $con->insert_id;
+
                         $insert_string = "";
                         foreach ($order_product as $key => $products) {
                             $insert_string .= "('" . $orderID . "','" . $products['id_product'] . "','" . $_POST['quantity'][$products['id_product']] . "','" . $products['price'] . "','" . time() . "','" . time() . "')";
@@ -78,7 +84,6 @@ session_start();
                                 $insert_string .= ",";
                             }
                         };
-
                         $insert_order = mysqli_query($con, "INSERT INTO `casestudy`.`orders_detail` (`id_order`, `id_product`, `quanlity`, `price`, `created_time`, `last_update`) VALUES " . $insert_string . "; ");
                         if ($insert_order == true) {
                             unset($_SESSION['cart']);
@@ -95,43 +100,77 @@ session_start();
     }
 
     ?>
-    <div class="total">
-        <div class="hearder">
-            <div class="container">
-                <div class="hearder_home hearder_button">
-                    <a href="../index.php">HOME</a>
-                </div>
-                <div class="hearder_logo">
-                    <a href=""><img src="../asset/img/logo.png" alt="" /></a>
-                </div>
-                <div class="hearder_right">
-                    <div class="hearder_cart">
-                        <a href=""><i class="fas fa-shopping-cart"></i></a>
-                    </div>
-                    <div class="hearder_button">
-                        <a href="login.php">LOGIN</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="pb-5">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <a class="navbar-brand" href="../index.php"><img src="../asset/img/logo.png" alt=""></a>
+            <button class="navbar_home navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="cart">
-            <h1>Giỏ hàng</h1>
-            <div class="notify_msg">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="../index.php">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="login.php">Đăng nhập</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0 form-search" action="#" method="post">
+                    <input class="form-control mr-sm-2" type="text" name="tim" placeholder="Search" aria-label="Search">
+
+                    <input class="btn btn-outline-secondary my-2 my-sm-0" type="submit" name="sear" value="Search">
+                </form>
+
+            </div>
+            <div class="cart">
+                <a href="cart.php" class="btn btn-outline-secondary">GIỎ HÀNG <span class="text-danger"><?php if (isset($_SESSION['cart'])) {
+                                                                                                            $qtt = 0;
+                                                                                                            foreach ($_SESSION['cart'] as $value) {
+                                                                                                                $qtt += $value;
+                                                                                                            }
+                                                                                                            if ($qtt == 0) {
+                                                                                                                echo "";
+                                                                                                            } else {
+                                                                                                                echo "($qtt)";
+                                                                                                            }
+                                                                                                        } ?> </span></a>
+            </div>
+        </nav>
+
+        <hr style="margin-top: 80px;" />
+
+        <div class="container border border-secondary rounded">
+            <h1 class="text-center">CART</h1>
+            <div class="text-danger">
                 <?= (!empty($error)) ? $error : "" ?>
                 <?= (!empty($success)) ? $success : "" ?>
             </div>
             <hr>
             <form action="cart.php?action=submit" method="post">
-                <table class="table_cart">
+                <table class="table table-bordered table-dark text-center">
                     <tr>
-                        <th>STT</th>
-                        <th>Tên Sản Phẩm</th>
-                        <th>Ảnh sản phẩm</th>
-                        <th>Đơn giá</th>
-                        <th>Số lượng</th>
-                        <th>Thành tiền</th>
-                        <th>Xóa</th>
+                        <th scope="col">STT</th>
+                        <th scope="col">Tên Sản Phẩm</th>
+                        <th class="d-none d-md-block" scope="col">Ảnh sản phẩm</th>
+                        <th scope="col">Đơn giá</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Thành tiền</th>
+                        <th scope="col">Xóa</th>
                     </tr>
                     <?php
                     if (isset($products) & (isset($_SESSION['cart']))) {
@@ -140,22 +179,22 @@ session_start();
                         $num = 1;
                         while ($row = mysqli_fetch_array($products)) { ?>
                             <tr>
-                                <td><?= $num ?></td>
+                                <td scope="row"><?= $num ?></td>
                                 <td><?= $row['Name'] ?> </td>
-                                <td class="table_cart-img"><img src="../asset/img/<?= $row['img'] ?>" alt=""></td>
+                                <td class="d-none d-md-block"><img src="../asset/img/<?= $row['img'] ?>" alt="" style="width:100px"></td>
                                 <td>Giá:<?= $row['price'] ?>$ </td>
-                                <td class="quantity"><input type="text" value="<?= $_SESSION['cart'][$row['id_product']] ?>" name="quantity[<?= $row['id_product'] ?>]"></td>
+                                <td><input class="text-center" type="text" size="1" value="<?= $_SESSION['cart'][$row['id_product']] ?>" name="quantity[<?= $row['id_product'] ?>]"></td>
                                 <td><?= $row['price'] * $_SESSION['cart'][$row['id_product']] ?>$</td>
-                                <td class="table_cart-delete"><a href="cart.php?action=delete&id=<?= $row['id_product'] ?>">Delete</a></td>
+                                <td><a class="text-decoration-none btn btn-outline-danger" href="cart.php?action=delete&id=<?= $row['id_product'] ?>">Delete</a></td>
                             </tr>
                         <?php
                             $total += $row['price'] * $_SESSION['cart'][$row['id_product']];
                             $num++;
                         } ?>
                         <tr>
-                            <td></td>
+                            <td scope="row"></td>
                             <td><strong> Tổng Tiền </strong></td>
-                            <td></td>
+                            <td class="d-none d-md-block"></td>
                             <td></td>
                             <td></td>
                             <td style="color: red;"><strong><?= $total ?>$</strong></td>
@@ -164,34 +203,49 @@ session_start();
                     <?php
                     } ?>
 
-                </table>
-                <div class="cart_update">
+                </table class="container-fluid">
+                <div class="d-flex justify-content-end">
 
-                    <input type="submit" name="update_click" value="Cập nhật">
+                    <input class="btn btn-outline-dark" type="submit" name="update_click" value="Cập nhật">
                 </div>
 
                 <hr>
-                <div class="cart_cus">
-                    <h2>Thông tin khách hàng</h2>
+                <div class="container pb-3">
+                    <h2 class="text-center text-danger">Thông tin khách hàng</h2>
 
-                    Name: <br>
-                    <input type="text" value="" name="Name">
-                    <br>
-                    Phone: <br>
-                    <input type="number" value="" name="phone">
-                    <br>
-                    Address: <br>
-                    <input type="text" value="" name="address">
-                    <br>
-                    Note: <br>
-                    <input type="text" value="" name="note">
+                    <div class="form-group">
+                        <label class="ml-3">Name:</label>
+                        <input type="text" class="form-control" value="" name="Name" placeholder="Enter Name">
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="ml-3">Phone:</label>
+                        <input type="number" class="form-control" value="" name="phone" placeholder="Enter Phone">
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="ml-3">Address:</label>
+                        <input type="text" class="form-control" value="" name="address" placeholder="Enter Address">
+
+                    </div>
+                    <div class="form-group">
+                        <label class="ml-3">Note:</label>
+                        <input type="text" class="form-control" value="" name="note" placeholder="Enter Note">
+
+                    </div>
                     <br><br>
-                    <input type="submit" name="order_click" value="Mua Hàng">
+                    <input class="btn btn-danger " type="submit" name="order_click" value="Mua Hàng">
 
                 </div>
             </form>
         </div>
     </div>
+    <div>
+        <?php include "footer.php" ?>
+    </div>
+
 </body>
 
 </html>

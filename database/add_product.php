@@ -1,44 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+session_start();
+if (isset($_SESSION['current_user'])) {
+    $currentUser = $_SESSION['current_user'];
+?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../asset/css/mainadmin.css" />
-    <link rel="stylesheet" href="../asset/css/resetcss.css" />
-    <title>Tạo tài khoản mới</title>
-</head>
+    <!DOCTYPE html>
+    <html lang="en">
 
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="../asset/css/style.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script> -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <title>Tạo tài khoản mới</title>
+    </head>
 
-
-    <div class="login">
-        <h1>Thêm sản phẩm:</h1>
-        <form action="Xl_add-product.php" method="post">
-            Name:<br>
-            <input type="text" name="Name" value="">
-            <br>
-            <br>
-
-            Image:<br>
-            <input type="text" name="img" value="">
-            <br>
-            <br>
-
-            Price: <br>
-            <input type="text" name="price" value="">
-            <br><br>
+    <body>
 
 
-            <input type="submit" value="create">
+        <div class="container__login">
 
-        </form>
-    </div>
+            <form action="Xl_add-product.php" method="post">
+                <h3>Thêm sản phẩm</h3>
+                <input type="text" name="Name" value="" placeholder="Name" />
+                <input type="file" name="img" value="" placeholder="Image">
+                <input type="number" name="price" value="" placeholder="Price">
+                <div class="btn_box">
+                    <button type="submit">ADD</button>
+                </div>
 
+            </form>
+        </div>
 
+    </body>
 
+    </html>
 
-
-</body>
-
-</html>
+<?php } else {
+    header('location:./login.php');
+}
+?>
