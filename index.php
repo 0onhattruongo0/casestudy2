@@ -172,7 +172,7 @@ $totalPage = ceil($totalRecords / $item_per_page);
 
                 while ($row = mysqli_fetch_array($product)) {
                 ?>
-                    <div class="col-sm-12 col-md-6 col-lg-3">
+                    <div class="col-6 col-lg-3">
                         <div class="product rounded">
                             <div class="product_overlay">
                                 <div class="products_img"><img src="asset/img/<?= $row['img'] ?>" alt=""></div>

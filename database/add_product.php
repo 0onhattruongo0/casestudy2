@@ -23,7 +23,7 @@ if (isset($_SESSION['current_user'])) {
 
         <div class="container__login">
 
-            <form action="Xl_add-product.php" method="post">
+            <form action="xl_add-product.php" method="post">
                 <h3>Thêm sản phẩm</h3>
                 <input type="text" name="Name" value="" placeholder="Name" />
                 <input type="file" name="img" value="" placeholder="Image">

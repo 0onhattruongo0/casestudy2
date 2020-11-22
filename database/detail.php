@@ -57,7 +57,7 @@ session_start();
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="#">Đăng nhập</a>
+                            <a class="nav-link disabled" href="login.php">Đăng nhập</a>
                         </li>
                     </ul>
                     <form class="form-inline my-2 my-lg-0 form-search" action="index.php?action=sea" method="post">

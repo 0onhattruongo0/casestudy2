@@ -42,7 +42,6 @@ session_start();
         switch ($_GET['action']) {
             case "add":
                 update_cart(true);
-                header('location:./cart.php');
                 break;
             case "delete":
                 if (isset($_GET['id'])) {
